@@ -14,7 +14,7 @@ type CurrencyIconProps = {
 const Image = styled('img')(() => ({}));
 
 const getTokenIcon = (symbol: string): string => {
-  switch(symbol) {
+  switch (symbol) {
     case 'BANANA':
       return 'https://raw.githubusercontent.com/telosnetwork/token-list/master/logos/banana-logo.png';
     case 'LVC':
@@ -23,6 +23,8 @@ const getTokenIcon = (symbol: string): string => {
       return 'https://raw.githubusercontent.com/telosnetwork/token-list/master/logos/RF.webp';
     case 'VC':
       return 'https://raw.githubusercontent.com/telosnetwork/token-list/master/logos/VC.png';
+    case 'XPOLAR':
+      return 'https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xeAf7665969f1DaA3726CEADa7c40Ab27B3245993.png';
     default:
       return getCurrencyIcon(symbol);
   }

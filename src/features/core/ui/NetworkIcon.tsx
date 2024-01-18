@@ -16,6 +16,15 @@ const Image = styled('img')(({theme}) => ({
   borderRadius: theme.shape.borderRadius,
 }));
 
+const getNetworkIcon_ = (chainId: number | string): string => {
+  switch (chainId) {
+    case 211:
+      return 'https://raw.githubusercontent.com/aurora-is-near/doc.aurora.dev/857d5a0e86a3fa4e5f8f90c3ba219f3cacfa4906/static/img/favicon.svg';
+    default:
+      return getNetworkIcon(chainId);
+  }
+};
+
 export const NetworkIcon: React.FC<NetworkIconProps> = (props) => {
   const {size, chainId, ...otherProps} = props;
   const defaultUrl = getNetworkIcon('default');
@@ -24,7 +33,7 @@ export const NetworkIcon: React.FC<NetworkIconProps> = (props) => {
   }
   return (
     <Image
-      src={getNetworkIcon(chainId)}
+      src={getNetworkIcon_(chainId)}
       width={size}
       height={size}
       alt={String(chainId)}
