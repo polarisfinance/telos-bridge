@@ -16,7 +16,8 @@ export const defaultBreakpoints = {
 
 export const defaultTypography = {
   // fontFamily: '"Roboto Mono", monospace',
-  fontFamily: 'Rajdhani,Inter-Variable,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"',
+  fontFamily:
+    'Rajdhani,Inter-Variable,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"',
   h1: {
     fontSize: 30,
     lineHeight: '36px',
@@ -53,7 +54,7 @@ export const defaultTypography = {
     lineHeight: '16px',
     fontWeight: 500,
   },
-  panelTitle:{
+  panelTitle: {
     fontSize: 18,
     lineHeight: '20px',
     fontWeight: 600,
@@ -74,7 +75,6 @@ export const baseTheme = {
   palette: Palettes.lzDarkPalette,
   shape: {
     borderRadius: 0,
-    buttonMainRadius: 16,
   },
 } as ThemeOptions;
 
