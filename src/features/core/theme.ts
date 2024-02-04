@@ -15,42 +15,48 @@ export const defaultBreakpoints = {
 } as BreakpointsOptions;
 
 export const defaultTypography = {
-  fontFamily: '"Roboto Mono", monospace',
+  // fontFamily: '"Roboto Mono", monospace',
+  fontFamily: 'Rajdhani,Inter-Variable,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"',
   h1: {
-    fontSize: 28,
+    fontSize: 30,
     lineHeight: '36px',
     fontWeight: 500,
   },
   h2: {
-    fontSize: 24,
+    fontSize: 26,
     lineHeight: '28px',
     fontWeight: 500,
   },
   h3: {
-    fontSize: 20,
+    fontSize: 22,
     lineHeight: '24px',
     fontWeight: 500,
   },
   p1: {
-    fontSize: 16,
+    fontSize: 18,
     lineHeight: '24px',
-    fontWeight: 400,
+    fontWeight: 500,
   },
   p2: {
-    fontSize: 14,
+    fontSize: 16,
     lineHeight: '20px',
     letterSpacing: '-0.02em',
-    fontWeight: 400,
+    fontWeight: 500,
   },
   p3: {
-    fontSize: 12,
+    fontSize: 14,
     lineHeight: '16px',
-    fontWeight: 400,
+    fontWeight: 500,
   },
   caption: {
-    fontSize: 10,
+    fontSize: 12,
     lineHeight: '16px',
-    fontWeight: 400,
+    fontWeight: 500,
+  },
+  panelTitle:{
+    fontSize: 18,
+    lineHeight: '20px',
+    fontWeight: 600,
   },
   link: {
     cursor: 'pointer',
@@ -68,6 +74,7 @@ export const baseTheme = {
   palette: Palettes.lzDarkPalette,
   shape: {
     borderRadius: 0,
+    buttonMainRadius: 16,
   },
 } as ThemeOptions;
 

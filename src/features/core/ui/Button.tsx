@@ -29,7 +29,7 @@ export type ButtonProps = React.ComponentProps<typeof Button>;
 
 export const Button = styled('button', {name: 'LzButton', label: 'LzButton'})<BaseButtonProps>(
   ({theme, size = DEFAULT_SIZE, variant = 'secondary'}) => ({
-    borderRadius: theme.shape.borderRadius,
+    borderRadius: theme.shape.buttonMainRadius,
     border: '0',
     height: HEIGHT[size],
     fontSize: FONT_SIZE[size],
@@ -41,21 +41,25 @@ export const Button = styled('button', {name: 'LzButton', label: 'LzButton'})<Ba
     alignItems: 'center',
     justifyContent: 'center',
     '&:disabled': {
-      opacity: 0.7,
-      filter: 'grayscale(100%) invert(0.9)',
+      bgcolor:'frame.light',
       '&:hover': {
         cursor: 'default',
       },
     },
     ...(variant === 'primary' && {
-      backgroundColor: theme.palette.primary.main,
+      background: theme.palette.primary.mainButton,
+      fontWeight:700,
       color: theme.palette.primary.contrastText,
+      '&:disabled': {
+        background: theme.palette.frame.light,
+        bgcolor: theme.palette.frame.light,
+      },
       '&:hover:not(:disabled)': {
-        backgroundColor: theme.palette.primary.light,
+        background: theme.palette.primary.mainButton,
       },
       '&:focus': {
         outline: 0,
-        backgroundColor: theme.palette.primary.light,
+        background: theme.palette.primary.mainButton,
       },
     }),
     ...(variant === 'secondary' && {

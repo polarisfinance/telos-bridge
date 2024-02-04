@@ -47,13 +47,17 @@ const swipeUp = keyframes({
 });
 
 const Button = styled('button', {name: 'SwapButton'})(({theme}) => ({
-  height: '88px',
-  backgroundColor: 'transparent',
+  height: '30px',
+  width:'30px',
+  backgroundColor: theme.palette.background.default,
   border: '0',
-  display: 'flex',
+  borderRadius:'15px',
+  display: 'block',
+  margin:'0px auto',
   justifyContent: 'center',
   alignItems: 'center',
   cursor: 'pointer',
+  position:'relative',top: '15px',zIndex:'1000',
   color: theme.palette.text.primary,
   '&:focus': {
     outline: '0',
@@ -76,6 +80,7 @@ export const SwapButton = (props: SwapButtonProps) => {
         width={iconSize}
         height={iconSize}
         fill='none'
+        style={{margin: '0px auto'}}
         xmlns='http://www.w3.org/2000/svg'
       >
         <path

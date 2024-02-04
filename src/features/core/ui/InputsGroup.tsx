@@ -7,15 +7,15 @@ export interface InputsGroupProps {
 }
 
 const Group = styled('div', {name: 'InputsGroup'})(({theme}) => ({
-  border: `1px solid ${theme.palette.divider}`,
+  border: `0px solid ${theme.palette.divider}`,
   borderRadius: theme.shape.borderRadius,
   overflow: 'hidden',
   '& [class*=SelectButton]': {
-    borderRadius: 0,
+    // borderRadius: 0,
   },
   '& [class*=Input]': {
     border: 0,
-    borderRadius: 0,
+    // borderRadius: 0,
   },
 }));
 
@@ -33,7 +33,7 @@ const Top = styled('div', {name: 'InputsGroupTop'})(() => ({
 
 const InputsGroupTop = (props: InputsGroupProps) => {
   const {children} = props;
-  return <Top>{children}</Top>;
+  return <Top sx={{bgcolor:"frame.ultralight",borderRadius:'32px',overflow:'hidden'}}>{children}</Top>;
 };
 
 const InputsGroupBottom = (props: InputsGroupProps) => {

@@ -1,12 +1,18 @@
 export const telosDarkPalette = {
   mode: 'dark',
   primary: {
-    main: '#6928DB', // Emphasize purple
-    contrastText: '#FFFFFF',
+    main: '#A99BC6', // Emphasize purple
+    contrastText: '#FDFDFD',
+    mainButton: 'linear-gradient(92.92deg, #C004FE 4.85%, #7E02F5 95.15%)',
   },
   secondary: {
     main: '#2E3231',
     contrastText: '#FFFFFF',
+  },
+  frame:{
+    dark:'#292043',
+    light:'#41365E',
+    ultralight:'#50456E',
   },
   info: {
     main: '#2ed8a7',
@@ -21,15 +27,16 @@ export const telosDarkPalette = {
     main: '#ED8B00',
   },
   text: {
-    primary: '#FAFAFA',
-    secondary: '#999A9A',
+    primary: '#FDFDFD',
+    secondary: '#A99BC6',
   },
   divider: 'rgba(250, 250, 250, 0.12)',
   background: {
     paper: '#1A1E1D',
-    default: '#ffffff00',  // see styles.css > .app-background
+    default: '#150128',  // see styles.css > .app-background
   },
 };
+
 
 export const lzDarkPalette = {
   mode: 'dark',

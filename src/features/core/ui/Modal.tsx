@@ -37,7 +37,7 @@ const DialogOverlay = styled(Dialog.Overlay)(() => ({
 
 const DialogContent = styled(Dialog.Content, {name: 'Modal-DialogContent'})(({theme}) => ({
   pointerEvents: 'none',
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: theme.palette.frame.dark,
   maxWidth: '100%',
   position: 'fixed',
   top: '50%',
@@ -49,7 +49,7 @@ const DialogContent = styled(Dialog.Content, {name: 'Modal-DialogContent'})(({th
   overflow: 'hidden',
   flexDirection: 'column',
   fontFamily: (theme.typography as TypographyProps).fontFamily,
-  borderRadius: theme.shape.borderRadius,
+  borderRadius: 16,
   width: '100%',
   height: '100%',
   "&[data-state='open']": {

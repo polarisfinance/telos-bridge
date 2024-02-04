@@ -9,6 +9,7 @@ const AppDocument = () => {
           href='https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700;800&display=swap'
           rel='stylesheet'
         />
+        <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet"></link>
         <script src="https://cdn.usefathom.com/script.js" data-site="EGITFGVM" defer></script>
       </Head>
 

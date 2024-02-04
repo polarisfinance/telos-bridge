@@ -18,6 +18,7 @@ import {Alerts} from './Alerts';
 import {GasOnDestinationButton} from './GasOnDestinationButton';
 import {NetworkSelect} from './NetworkSelect';
 import {SlippageButton} from './SlippageButton';
+import {Panel} from '@/core/ui/Panel';
 
 import { isOFT } from '../../../config';
 
@@ -45,172 +46,173 @@ export const Bridge = observer(() => {
 
   return (
     <Box display='flex' flexDirection='column'>
-      <WalletDetails wallet={srcWallet} />
-      <InputsGroup>
-        <InputsGroup.Top>
-          <CurrencySelect
-            sx={{flex: 2}}
-            groups={bridgeStore.srcCurrencyOptionsGroups}
-            value={bridgeStore.form.srcCurrency}
-            onSelect={bridgeStore.setSrcCurrency}
-          />
-          <NetworkSelect
-            sx={{flex: 1}}
-            options={bridgeStore.srcNetworkOptions}
-            icon={false}
-            onSelect={bridgeStore.setSrcChainId}
-            value={bridgeStore.form?.srcChainId}
-          />
-        </InputsGroup.Top>
-        <InputsGroup.Bottom>
-          <Input
-            size='lg'
-            placeholder='0'
-            startAdornment={
-              <Button size='xs' variant='tertiary' onClick={bridgeStore.setMaxAmount}>
-                Max
-              </Button>
-            }
-            onChange={(event) => bridgeStore.setAmount(event.target.value)}
-            value={bridgeStore.form.amount}
-            endAdornment={
-              <InputAdornment>
-                <Box color='text.secondary' typography='p3'>
-                  Balance
-                </Box>
-                <Box color='text.secondary' typography='p3'>
-                  {bridgeStore.srcBalance?.toExact() ?? '--'}
-                </Box>
-              </InputAdornment>
-            }
-          />
-        </InputsGroup.Bottom>
-      </InputsGroup>
+      <Panel sx={{pt: '30px',borderRadius:0}}>
+        <WalletDetails wallet={srcWallet} />
+        <InputsGroup>
+          <InputsGroup.Top>
+            <CurrencySelect
+              sx={{flex: 2,bgcolor:"frame.ultralight"}}
+              groups={bridgeStore.srcCurrencyOptionsGroups}
+              value={bridgeStore.form.srcCurrency}
+              onSelect={bridgeStore.setSrcCurrency}
+            />
+            <NetworkSelect
+              sx={{flex: 1,bgcolor:"frame.ultralight"}}
+              options={bridgeStore.srcNetworkOptions}
+              icon={false}
+              onSelect={bridgeStore.setSrcChainId}
+              value={bridgeStore.form?.srcChainId}
+            />
+          </InputsGroup.Top>
+          <InputsGroup.Bottom>
+            <Input
+            sx={{color:'white'}}
+              size='lg'
+              placeholder='0'
+              onChange={(event) => bridgeStore.setAmount(event.target.value)}
+              value={bridgeStore.form.amount}
+              endAdornment={
+                <InputAdornment>
+                  <Box color='text.secondary' typography='p3'>
+                    Balance<br/>
+                    {bridgeStore.srcBalance?.toExact() ?? '--'}
+                  </Box>
+                  <Button size='xs' variant='tertiary' onClick={bridgeStore.setMaxAmount} sx={{ml:1}}>
+                    Max
+                  </Button>
+                </InputAdornment>
+              }
+            />
+          </InputsGroup.Bottom>
+        </InputsGroup>
+      </Panel>
       <SwapButton onClick={bridgeStore.switch} />
-      <WalletDetails wallet={dstWallet} />
-      <InputsGroup>
-        <InputsGroup.Top>
-          <CurrencySelect
-            sx={{flex: 2}}
-            groups={bridgeStore.dstCurrencyOptionsGroups}
-            onSelect={bridgeStore.setDstCurrency}
-            value={bridgeStore.form.dstCurrency}
-          />
-          <NetworkSelect
-            sx={{flex: 1}}
-            options={bridgeStore.dstNetworkOptions}
-            onSelect={bridgeStore.setDstChainId}
-            icon={false}
-            value={bridgeStore.form.dstChainId}
-          />
-        </InputsGroup.Top>
-        <InputsGroup.Bottom>
-          <Input
-            size='lg'
-            value={outputAmount?.toExact() ?? '-'}
-            readOnly
-            endAdornment={
-              <InputAdornment>
-                <Box typography='p3' sx={{gap: 1, display: 'flex'}}>
-                  <Box
-                    component='span'
-                    color={fiatSymbol === FiatSymbol.USD ? 'text.primary' : 'text.secondary'}
-                    onClick={handleSetUsd}
-                    sx={{cursor: 'pointer'}}
-                  >
-                    USD
+      <Panel sx={{bgcolor:'frame.dark',pt: '30px',borderRadius:0}}>
+        <WalletDetails wallet={dstWallet} />
+        <InputsGroup>
+          <InputsGroup.Top>
+            <CurrencySelect 
+              sx={{flex: 2,bgcolor:"frame.ultralight"}}
+              groups={bridgeStore.dstCurrencyOptionsGroups}
+              onSelect={bridgeStore.setDstCurrency}
+              value={bridgeStore.form.dstCurrency}
+            />
+            <NetworkSelect
+              sx={{flex: 1,bgcolor:"frame.ultralight"}}
+              options={bridgeStore.dstNetworkOptions}
+              onSelect={bridgeStore.setDstChainId}
+              icon={false}
+              value={bridgeStore.form.dstChainId}
+            />
+          </InputsGroup.Top>
+          <InputsGroup.Bottom>
+            <Input
+              size='lg'
+              value={outputAmount?.toExact() ?? '-'}
+              readOnly
+              endAdornment={
+                <InputAdornment>
+                  <Box typography='p3' sx={{gap: 1, display: 'flex'}}>
+                    <Box
+                      component='span'
+                      color={fiatSymbol === FiatSymbol.USD ? 'text.primary' : 'text.secondary'}
+                      onClick={handleSetUsd}
+                      sx={{cursor: 'pointer'}}
+                    >
+                      USD
+                    </Box>
+                    <Box
+                      component='span'
+                      color={fiatSymbol === FiatSymbol.EUR ? 'text.primary' : 'text.secondary'}
+                      onClick={handleSetEur}
+                      sx={{cursor: 'pointer'}}
+                    >
+                      EUR
+                    </Box>
                   </Box>
-                  <Box
-                    component='span'
-                    color={fiatSymbol === FiatSymbol.EUR ? 'text.primary' : 'text.secondary'}
-                    onClick={handleSetEur}
-                    sx={{cursor: 'pointer'}}
-                  >
-                    EUR
+                  <Box color='text.secondary' typography='p3'>
+                    {outputFiat?.value.toFixed(2) ?? '--'}
                   </Box>
-                </Box>
-                <Box color='text.secondary' typography='p3'>
-                  {outputFiat?.value.toFixed(2) ?? '--'}
-                </Box>
-              </InputAdornment>
+                </InputAdornment>
+              }
+            />
+          </InputsGroup.Bottom>
+        </InputsGroup>
+        <Details
+          sx={{my: '24px'}}
+          items={ isOFT(bridgeStore.form.srcCurrency?.symbol as string) ? [
+            {
+              label: 'Gas on destination',
+              value: <GasOnDestinationButton />,
+            },
+            {
+              label: 'You will receive',
+              value: outputAmount
+                ? outputAmount.toExact() + ' ' + fiatStore.getSymbol(outputAmount.currency)
+                : '--',
+            },
+            {
+              label: 'Fee',
+              value: feeFiat
+                ? feeFiat.value.toFixed(2) + ' USD'
+                : nativeFee
+                ? nativeFee.toSignificant(8) + ' ' + fiatStore.getSymbol(nativeFee.currency)
+                : '--',
             }
-          />
-        </InputsGroup.Bottom>
-      </InputsGroup>
-      <Details
-        sx={{my: '24px'}}
-        items={ isOFT(bridgeStore.form.srcCurrency?.symbol as string) ? [
-          {
-            label: 'Gas on destination',
-            value: <GasOnDestinationButton />,
-          },
-          {
-            label: 'You will receive',
-            value: outputAmount
-              ? outputAmount.toExact() + ' ' + fiatStore.getSymbol(outputAmount.currency)
-              : '--',
-          },
-          {
-            label: 'Fee',
-            value: feeFiat
-              ? feeFiat.value.toFixed(2) + ' USD'
-              : nativeFee
-              ? nativeFee.toSignificant(8) + ' ' + fiatStore.getSymbol(nativeFee.currency)
-              : '--',
-          }
-        ] : [
-          {
-            label: 'Gas on destination',
-            value: <GasOnDestinationButton />,
-          },
-          {
-            label: 'You will receive',
-            value: outputAmount
-              ? outputAmount.toExact() + ' ' + fiatStore.getSymbol(outputAmount.currency)
-              : '--',
-          },
-          {
-            label: 'Fee',
-            value: feeFiat
-              ? feeFiat.value.toFixed(2) + ' USD'
-              : nativeFee
-              ? nativeFee.toSignificant(8) + ' ' + fiatStore.getSymbol(nativeFee.currency)
-              : '--',
-          },
-          {
-            label: 'Slippage tolerance',
-            value: <SlippageButton />,
-          },
-        ]}
-      />
-      {srcWallet?.address && dstAddress ? (
-        error ? (
-          <Button variant='primary' type='button' disabled>
+          ] : [
+            {
+              label: 'Gas on destination',
+              value: <GasOnDestinationButton />,
+            },
+            {
+              label: 'You will receive',
+              value: outputAmount
+                ? outputAmount.toExact() + ' ' + fiatStore.getSymbol(outputAmount.currency)
+                : '--',
+            },
+            {
+              label: 'Fee',
+              value: feeFiat
+                ? feeFiat.value.toFixed(2) + ' USD'
+                : nativeFee
+                ? nativeFee.toSignificant(8) + ' ' + fiatStore.getSymbol(nativeFee.currency)
+                : '--',
+            },
+            {
+              label: 'Slippage tolerance',
+              value: <SlippageButton />,
+            },
+          ]}
+        />
+        {srcWallet?.address && dstAddress ? (
+          error ? (
+            <Button variant='primary' type='button' disabled sx={{mb:2}}>
+              {error}
+            </Button>
+          ) : isApproving ? (
+            <Button variant='primary' type='button' sx={{mb:2}}>
+              Approving ...
+            </Button>
+          ) : isExecuting ? (
+            <Button variant='primary' type='button' sx={{mb:2}}>
+              Sending ...
+            </Button>
+          ) : (
+            <Button variant='primary' type='button' sx={{mb:2}} onClick={bridgeStore.transfer}>
+              Transfer
+            </Button>
+          )
+        ) : error ? (
+          <Button variant='primary' type='button' disabled sx={{mb:2}}>
             {error}
           </Button>
-        ) : isApproving ? (
-          <Button variant='primary' type='button'>
-            Approving ...
-          </Button>
-        ) : isExecuting ? (
-          <Button variant='primary' type='button'>
-            Sending ...
-          </Button>
         ) : (
-          <Button variant='primary' type='button' onClick={bridgeStore.transfer}>
-            Transfer
+          <Button variant='primary' type='button' onClick={uiStore.walletModal.open} sx={{mb:2}}>
+            {'Connect'}
           </Button>
-        )
-      ) : error ? (
-        <Button variant='primary' type='button' disabled>
-          {error}
-        </Button>
-      ) : (
-        <Button variant='primary' type='button' onClick={uiStore.walletModal.open}>
-          {'Connect'}
-        </Button>
-      )}
-      <Alerts />
+        )}
+        <Alerts />
+      </Panel>
     </Box>
   );
 });

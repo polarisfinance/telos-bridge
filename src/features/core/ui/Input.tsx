@@ -126,7 +126,6 @@ interface InputAdornmentProps {
 
 const SInputAdornment = styled('div', {name: 'InputAdornment'})(() => ({
   display: 'flex',
-  flexDirection: 'column',
   alignItems: 'flex-end',
 }));
 

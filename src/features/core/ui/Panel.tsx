@@ -18,20 +18,22 @@ interface PanelProps extends CommonProps {
 const PanelRoot = styled(Box, {name: 'Panel'})(({theme}) => ({
   width: '464px',
   maxWidth: '100%',
-  padding: '0 16px',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
   color: theme.palette.text.primary,
+  borderRadius: 22,
+  padding:'0 16px',
+  overflow: 'hidden',
 }));
 
 const Title = styled('div', {name: 'PanelTitle'})(({theme}) => ({
   display: 'flex',
   justifyContent: 'space-between',
-  color: theme.palette.text.secondary,
+  color: theme.palette.text.primary,
   alignItems: 'center',
   marginBottom: 24,
-  ...theme.typography.p1,
+  ...theme.typography.panelTitle,
 }));
 
 const PanelContent = styled('div', {name: 'PanelContent'})(() => ({
@@ -49,7 +51,7 @@ export const Panel = (props: PanelProps) => {
   return (
     <PanelRoot sx={sx}>
       {(title || endAdornment) && (
-        <Title>
+        <Title sx={{m:'16px 16px 0px 16px'}}>
           <div>{title}</div>
           <EndAdornment>{endAdornment}</EndAdornment>
         </Title>

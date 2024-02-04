@@ -13,6 +13,7 @@ export interface Typography {
   p1: CSSObject;
   p2: CSSObject;
   p3: CSSObject;
+  panelTitle: CSSObject;
   caption: CSSObject;
 }
 

@@ -16,7 +16,7 @@ const BridgePage: NextPageWithLayout = () => {
       <Panel>
         <BridgeTracker sx={{mb: 4}} />
       </Panel>
-      <Panel title='Transfer' endAdornment={<GasPrice />}>
+      <Panel title='Transfer' endAdornment={<GasPrice />} sx={{bgcolor:'frame.light',p: 0}}>
         <Bridge />
       </Panel>
     </>

@@ -186,9 +186,8 @@ function toOption(option: CurrencyOption | Currency): CurrencyOption {
 }
 
 const GroupHeader = styled('div', {name: 'CurrencySelect-GroupHeader'})(({theme}) => ({
-  ...theme.typography.caption,
-  textTransform: 'uppercase',
-  color: theme.palette.text.secondary,
+  ...theme.typography.p3,
+  color: theme.palette.text.primary,
   marginBottom: theme.spacing(1),
   marginLeft: theme.spacing(2),
   marginTop: theme.spacing(1),
