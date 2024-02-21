@@ -240,14 +240,31 @@ const XPOLAR = {
   sharedDecimals: 8,
 };
 
-const oftTokenList = ['BANANA', 'LVC', 'VC', 'RF', 'XPOLAR'];
+const TLOS = {
+  version: 2,
+  tokens: [
+    new Token(ChainId.AURORA, '0x3b73F4336a33eE36106Bb5C6d697192391db740F', 18, 'TLOS'),
+    new Token(ChainId.TELOS, '0xD102cE6A4dB07D247fcc28F366A623Df0938CA9E', 18, 'TLOS'),
+  ],
+  proxy: [
+    {
+      chainId: ChainId.AURORA,
+      address: '0x3b73F4336a33eE36106Bb5C6d697192391db740F',
+    },
+    {chainId: ChainId.TELOS, address: '0x3EaD0FBB27362eC7145BE26D0cD4cf3B75d7B82f'},
+  ],
+  fee: true,
+  sharedDecimals: 8,
+};
+
+const oftTokenList = ['BANANA', 'LVC', 'VC', 'RF', 'XPOLAR', 'TLOS'];
 
 export const isOFT = (tokenSymbol: string) => oftTokenList.includes(tokenSymbol);
 
 export const appConfig: AppConfig = createAppConfig({
   bridge: {
     aptos: [],
-    oft: [BANANA, LVC, VC, RF, XPOLAR],
+    oft: [BANANA, LVC, VC, RF, XPOLAR, TLOS],
     wrappedToken: [
       wrapped_mainnet,
       // wrapped_testnet,
