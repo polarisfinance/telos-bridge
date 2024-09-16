@@ -44,8 +44,8 @@
     "@layerzerolabs/ui-bridge-onft": "^0.1.7",
     "@layerzerolabs/ui-bridge-sdk": "~1.0.6",
     "@layerzerolabs/ui-bridge-wrapped-token": "~0.1.12",
-    "@layerzerolabs/ui-core": "~0.2.39",
-    "@layerzerolabs/ui-evm": "~0.1.23",
+    "@layerzerolabs/ui-core": "~0.2.81",
+    "@layerzerolabs/ui-evm": "~0.1.24",
     "@layerzerolabs/ui-price-sdk": "~0.0.1",
     "@layerzerolabs/ui-solana": "~1.0.6",
     "@layerzerolabs/ui-stargate-sdk": "~0.1.26",
@@ -85,7 +85,7 @@
   },
   "resolutions": {
     "@aptos-labs/wallet-adapter-core": "^2.2.0",
-    "@layerzerolabs/lz-sdk": "~0.0.51",
+    "@layerzerolabs/lz-sdk": "~0.0.81",
     "@layerzerolabs/sg-sdk": "^0.5.3",
     "@layerzerolabs/lz-aptos": "1.0.6"
   }
