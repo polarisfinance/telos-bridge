@@ -1,22 +1,6 @@
-import {SDK} from '@layerzerolabs/lz-aptos';
-import {Bridge as BridgeModule} from '@layerzerolabs/lz-aptos/dist/modules/apps/bridge';
-import {Coin as CoinModule} from '@layerzerolabs/lz-aptos/dist/modules/apps/coin';
-import {OFT as OFTModule} from '@layerzerolabs/lz-aptos/dist/modules/apps/oft';
-import {ChainId, ChainStage} from '@layerzerolabs/lz-sdk';
+import {ChainId} from '@layerzerolabs/lz-sdk';
 import {type AppConfig} from '@layerzerolabs/ui-app-config';
-import {
-  AptosManagedCoinRegisterService,
-  AptosResourceProvider,
-  BalanceProvider__aptos,
-  DstConfigProvider__aptos,
-} from '@layerzerolabs/ui-aptos';
-import {
-  AptosBridge__aptos,
-  AptosBridge__evm,
-  AptosBridgeConfig,
-} from '@layerzerolabs/ui-bridge-aptos';
 import {OftBridgeConfig} from '@layerzerolabs/ui-bridge-oft';
-import {OftBridgeApiFactory__aptos} from '@layerzerolabs/ui-bridge-oft/aptos';
 import {OftBridgeApiFactory__evm} from '@layerzerolabs/ui-bridge-oft/evm';
 import {
   mainnet as oftWrapperConfig,
@@ -31,26 +15,17 @@ import {
   RPC__StaticId__ERC1155BalanceProvider,
 } from '@layerzerolabs/ui-bridge-onft';
 import {createWrappedTokenBridge} from '@layerzerolabs/ui-bridge-wrapped-token';
-import {
-  Currency,
-  getChainStage,
-  getNativeCurrency,
-  isAptosChainId,
-  isEvmChainId,
-  Token,
-} from '@layerzerolabs/ui-core';
+import {Currency, getNativeCurrency, isEvmChainId, Token} from '@layerzerolabs/ui-core';
 import {BalanceProvider__evm, DstConfigProvider__evm, ProviderFactory} from '@layerzerolabs/ui-evm';
 import {
   StargateBridge__evm,
   StargateSDK,
   StargateWidgetBridge__evm,
 } from '@layerzerolabs/ui-stargate-sdk';
-import {AptosClient} from 'aptos';
 import assert from 'assert';
 import {constants} from 'ethers';
 import {uniqBy} from 'lodash-es';
 
-import {DefaultAirdropProvider__aptos} from '@/bridge/sdk/airdrop/DefaultAirdropProvider__aptos';
 import {DefaultAirdropProvider__evm} from '@/bridge/sdk/airdrop/DefaultAirdropProvider__evm';
 import {getStargateConfig} from '@/bridge/sdk/getStargateConfig';
 import {bridgeStore, initBridgeStore} from '@/bridge/stores/bridgeStore';
@@ -70,11 +45,6 @@ import {onftStore} from '@/onft/stores/onftStore';
 import {initOnftStore} from '@/onft/stores/onftStore';
 
 export async function bootstrap(lzAppConfig: AppConfig, providerFactory: ProviderFactory) {
-  const aptos = {
-    mainnet: createAptosModule(ChainStage.MAINNET),
-    testnet: createAptosModule(ChainStage.TESTNET),
-  };
-
   // Compile a list of unique currencies used in the app based on the bridge configuration
   const currencies = getCurrenciesFromLzAppConfig(lzAppConfig);
 
@@ -127,7 +97,6 @@ export async function bootstrap(lzAppConfig: AppConfig, providerFactory: Provide
           addEvmOft(oftConfig);
         }
 
-        addAptosOft(oftConfig);
         const native = oftConfig.native?.map(({chainId}) => getNativeCurrency(chainId)) ?? [];
         bridgeStore.addCurrencies(oftConfig.tokens);
         bridgeStore.addCurrencies(native);
@@ -140,7 +109,6 @@ export async function bootstrap(lzAppConfig: AppConfig, providerFactory: Provide
 
   for (const oftConfig of lzAppConfig.bridge.oft) {
     addEvmOft(oftConfig);
-    addAptosOft(oftConfig);
     bridgeStore.addCurrencies(oftConfig.tokens);
   }
 
@@ -151,27 +119,6 @@ export async function bootstrap(lzAppConfig: AppConfig, providerFactory: Provide
     for (const api of apis) {
       bridgeStore.addBridge(api);
     }
-  }
-
-  // Aptos Bridge
-  // https://github.com/LayerZero-Labs/LayerZero-Aptos-Contract
-  for (const aptosBridgeConfig of lzAppConfig.bridge.aptos) {
-    const chainStage = getChainStageFromAptosBridgeConfig(aptosBridgeConfig);
-    const scope = chainStage === ChainStage.MAINNET ? aptos.mainnet : aptos.testnet;
-    const api = {
-      evm: new AptosBridge__evm(providerFactory, aptosBridgeConfig),
-      aptos: new AptosBridge__aptos(
-        scope.sdk.client,
-        scope.bridgeModule,
-        aptosBridgeConfig,
-        scope.sdk,
-        scope.managedCoinRegisterService,
-        providerFactory,
-      ),
-    };
-
-    bridgeStore.addBridge(api.aptos);
-    bridgeStore.addBridge(api.evm);
   }
 
   // ONFT ERC721 & ERC1155
@@ -218,23 +165,11 @@ export async function bootstrap(lzAppConfig: AppConfig, providerFactory: Provide
     new TokenListProvider(),
   ]);
 
-  lzConfigStore.addProviders([
-    new DstConfigProvider__evm(providerFactory),
-    new DstConfigProvider__aptos(aptos.testnet.sdk),
-    new DstConfigProvider__aptos(aptos.mainnet.sdk),
-  ]);
+  lzConfigStore.addProviders([new DstConfigProvider__evm(providerFactory)]);
 
-  balanceStore.addProviders([
-    new BalanceProvider__evm(providerFactory),
-    new BalanceProvider__aptos(aptos.testnet.sdk.stage, aptos.testnet.resourceProvider),
-    new BalanceProvider__aptos(aptos.mainnet.sdk.stage, aptos.mainnet.resourceProvider),
-  ]);
+  balanceStore.addProviders([new BalanceProvider__evm(providerFactory)]);
 
-  airdropStore.addProviders([
-    new DefaultAirdropProvider__aptos(aptos.testnet.sdk),
-    new DefaultAirdropProvider__aptos(aptos.mainnet.sdk),
-    new DefaultAirdropProvider__evm(providerFactory),
-  ]);
+  airdropStore.addProviders([new DefaultAirdropProvider__evm(providerFactory)]);
 
   if (typeof window !== 'undefined') {
     // Todo:
@@ -254,23 +189,6 @@ export async function bootstrap(lzAppConfig: AppConfig, providerFactory: Provide
     }
   }
 
-  function addAptosOft(oftConfig: OftBridgeConfig) {
-    if (oftConfig.tokens.some((t) => isAptosChainId(t.chainId))) {
-      const aptosModule =
-        getChainStageFromOftConfig(oftConfig) === ChainStage.TESTNET
-          ? aptos.testnet
-          : aptos.mainnet;
-
-      const factory = new OftBridgeApiFactory__aptos(
-        aptosModule.sdk,
-        aptosModule.oftModule,
-        aptosModule.managedCoinRegisterService,
-      );
-      const api = factory.create(oftConfig);
-      bridgeStore.addBridge(api);
-    }
-  }
-
   function addStargateWrapperOft(
     oftConfig: OftBridgeConfig,
     wrapperConfig: Omit<OftWrapperBridgeConfig, 'oft'>,
@@ -283,39 +201,6 @@ export async function bootstrap(lzAppConfig: AppConfig, providerFactory: Provide
     });
     bridgeStore.addBridge(api);
   }
-}
-
-function createAptosModule(chainStage: ChainStage) {
-  const aptosNodeUrl =
-    chainStage === ChainStage.TESTNET
-      ? 'https://fullnode.testnet.aptoslabs.com/v1'
-      : 'https://mainnet.aptoslabs.com/v1';
-
-  const aptosClient = new AptosClient(aptosNodeUrl);
-
-  const sdk = new SDK({
-    provider: aptosClient,
-    stage: chainStage,
-  });
-
-  const resourceProvider = new AptosResourceProvider(aptosClient);
-  const managedCoinRegisterService = new AptosManagedCoinRegisterService(
-    aptosClient,
-    resourceProvider,
-  );
-
-  const oftModule = new OFTModule(sdk);
-  const coinModule = new CoinModule(sdk);
-  const bridgeModule = new BridgeModule(sdk, coinModule);
-
-  return {
-    sdk,
-    oftModule,
-    coinModule,
-    bridgeModule,
-    resourceProvider,
-    managedCoinRegisterService,
-  };
 }
 
 /**
@@ -382,12 +267,6 @@ function getChainsFromLzAppConfig(lzAppConfig: AppConfig): ChainId[] {
   );
 }
 
-function getChainStageFromOftConfig(oftConfig: OftBridgeConfig): ChainStage {
-  const chainId = oftConfig.tokens.at(0)?.chainId;
-  assert(chainId, 'chainId');
-  return getChainStage(chainId);
-}
-
 function supportsStargateOftWrapper(config: OftBridgeConfig) {
   if (config.version === 0) return false;
   if (config.direct) return false;
@@ -420,9 +299,3 @@ function getStargateWrapperConfig(lzAppConfig: AppConfig): Omit<OftWrapperBridge
 const STARGATE_WRAPPER_SUPPORTED_CHAINS: Set<ChainId> = new Set(
   oftWrapperConfig.map(({chainId}) => chainId),
 );
-
-function getChainStageFromAptosBridgeConfig(aptosBridgeConfig: AptosBridgeConfig) {
-  const chainId = aptosBridgeConfig.tokens.at(0)?.chainId;
-  assert(chainId);
-  return getChainStage(chainId);
-}
